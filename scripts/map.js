@@ -1,4 +1,5 @@
 import {drawFontains} from './fontains.js'
+import {drawPolygons} from "./polygons.js";
 
 // первоначальное создание карты
 var map = L.map('map', {
@@ -10,3 +11,5 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 drawFontains(map)
+
+drawPolygons(map)

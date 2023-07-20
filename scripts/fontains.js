@@ -1,4 +1,4 @@
-import points from "../data/data.js";
+import {points} from "../data/data.js";
 
 export function drawFontains(map) {
 
