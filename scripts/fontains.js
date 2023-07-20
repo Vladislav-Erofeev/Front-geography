@@ -23,10 +23,19 @@ let poin = points.map((a) => {
 })
 
 poin.forEach((point) => {
-    L.circle(point.geometry.coordinates, {
+    let circle = L.circle(point.geometry.coordinates, {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
-        radius: 20
+        radius: 20,
     }).addTo(map)
+
+    // добавление зума на точку при нажатии
+    circle.addEventListener('click', (e) => {
+        map.fitBounds(e.target.getBounds());
+    })
+
+    // добавление всплывающего окна
+    circle.bindPopup(`<h1>${point.objectName}</h1>
+    <h2>Id: ${point.id}</h2>`)
 })
