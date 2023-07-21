@@ -1,6 +1,6 @@
 import {polygons} from "../data/data.js";
 
-export function drawPolygons(map) {
+export function drawPolygons(map, layer) {
     let polyArray = polygons.map((item) => {
         item.polygon.coordinates = item.polygon.coordinates.map((coord) => {
             let point = L.point(coord)
@@ -11,7 +11,7 @@ export function drawPolygons(map) {
     })
 
     polyArray.forEach((item) => {
-        let polygon = L.polygon(item.polygon.coordinates).addTo(map)
+        let polygon = L.polygon(item.polygon.coordinates).addTo(layer)
 
         polygon.addEventListener('click', (e) => {
             map.fitBounds(e.target.getBounds());
@@ -20,4 +20,5 @@ export function drawPolygons(map) {
                                 <h1>${item.id}</h1>
                                 <h2>${item.uuid}</h2>`)
     })
+
 }

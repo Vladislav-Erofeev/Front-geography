@@ -1,6 +1,6 @@
 import {points} from "../data/data.js";
 
-export function drawFontains(map) {
+export function drawFontains(map, layer) {
 
 // проекция точки на карту
 // let pnt = L.point([4464243.156060995, 5528717.535569337])
@@ -14,13 +14,14 @@ export function drawFontains(map) {
         return a
     })
 
+
     poin.forEach((point) => {
         let circle = L.circle(point.geometry.coordinates, {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,
             radius: 20,
-        }).addTo(map)
+        }).addTo(layer)
 
         // добавление зума на точку при нажатии
         circle.addEventListener('click', (e) => {
@@ -31,4 +32,5 @@ export function drawFontains(map) {
         circle.bindPopup(`<h1>${point.objectName}</h1>
     <h2>Id: ${point.id}</h2>`)
     })
+
 }
