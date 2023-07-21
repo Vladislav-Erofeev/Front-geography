@@ -2,12 +2,20 @@ import {drawFontains} from './fontains.js'
 import {drawPolygons} from "./polygons.js";
 
 // первоначальное создание карты
-var map = L.map('map', {
-}).setView([44.599762035793084, 40.10297859115561], 6);
+var map = L.map('map').setView([44.599762035793084, 40.10297859115561], 6);
+
+// наложение разных тайлов
+// map.createPane('labels');
+// map.getPane('labels').style.zIndex = 500;
+// var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+//     attribution: '©OpenStreetMap, ©CartoDB'
+// }).addTo(map);
+// var positronLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+//     attribution: '©OpenStreetMap, ©CartoDB',
+//     pane: 'labels'
+// }).addTo(map);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
 let pointLayer = L.layerGroup()
