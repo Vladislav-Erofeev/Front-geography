@@ -1,13 +1,9 @@
 import {polygons} from "../data/data.js";
+import {CoordsConverter} from "./converter.js";
 
 export function drawPolygons(map, layer) {
     let polyArray = polygons.map((item) => {
-        item.polygon.coordinates = item.polygon.coordinates.map((coord) => {
-            let point = L.point(coord)
-            let projCord = L.CRS.EPSG3395.unproject(point)
-            return [projCord.lat, projCord.lng]
-        })
-        return item
+        return CoordsConverter.convertPolygonCoords(item)
     })
 
     let basicPolygonStyle = {
@@ -24,7 +20,7 @@ export function drawPolygons(map, layer) {
     }
 
     polyArray.forEach((item) => {
-        let polygon = L.polygon(item.polygon.coordinates).addTo(layer)
+        let polygon = L.polygon(item.geometry.coordinates[0]).addTo(layer)
 
         polygon.setStyle(basicPolygonStyle)
 
