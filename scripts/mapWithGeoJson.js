@@ -1,6 +1,6 @@
 // первоначальное создание карты
 import {CoordsConverter} from "./converter.js";
-import {points} from "../data/data.js";
+import {lines, points, polygons} from "../data/data.js";
 
 var map = L.map('map').setView([44.599762035793084, 40.10297859115561], 16);
 
@@ -50,23 +50,8 @@ L.geoJSON(pointArray, {
     }
 }).addTo(map)
 
-let testLine = {
-    "id": 926,
-    "geometry": {
-        "type": "LineString",
-        "coordinates": [
-            [
-                4366017.665980062,
-                5564945.377021163
-            ],
-            [
-                4366016.258957663,
-                5564957.004288738
-            ]
-        ]
-    }
-}
+L.geoJSON(CoordsConverter.convertLineArrayToGeoJSON(lines)).addTo(map)
 
-console.log(CoordsConverter.convertLineToGeoJSON(testLine))
+L.geoJSON(CoordsConverter.convertPolygonToGeoJSON(polygons[0])).addTo(map)
 
-L.geoJSON(CoordsConverter.convertLineToGeoJSON(testLine)).addTo(map)
+L.geoJSON(CoordsConverter.convertPolygonArrayToGeoJSON(polygons)).addTo(map)

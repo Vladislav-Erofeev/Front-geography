@@ -33,9 +33,9 @@ export class CoordsConverter {
         return polygon
     }
 
-    // convert point to GeoJSON
+    // convert point to geoJSON
     static convertPointToGeoJSON(point) {
-        point = {
+        return  {
             type: "Feature",
             ...point,
             geometry: {
@@ -43,15 +43,13 @@ export class CoordsConverter {
                 coordinates: this.convertCoordsToLatlng(point.geometry.coordinates).reverse()
             }
         }
-        return point
     }
 
-    // convert array of points to GeoJSON
+    // convert array of points to geoJSON
     static convertPointArrayToGeoJSON(array) {
         return array.map((point) => {
             point = {
                 ...point,
-                geometry: null,
                 type: point.geometry.type,
                 coordinates: this.convertCoordsToLatlng(point.geometry.coordinates).reverse()
             }
@@ -60,9 +58,9 @@ export class CoordsConverter {
         })
     }
 
-    // convert line to GeoJSON
+    // convert line to geoJSON
     static convertLineToGeoJSON(line) {
-        line = {
+        return {
             type: 'Feature',
             ...line,
             geometry: {
@@ -72,8 +70,54 @@ export class CoordsConverter {
                 })
             }
         }
-
-        return line
     }
 
+    // convert array of lines to geoJSON
+    static convertLineArrayToGeoJSON(array) {
+        return array.map((line) => {
+            line = {
+                ...line,
+                type: line.geometry.type,
+                coordinates: line.geometry.coordinates.map((coords) => {
+                    return this.convertCoordsToLatlng(coords).reverse()
+                })
+            }
+            delete line.geometry
+            return line
+        })
+    }
+
+    // convert polygon to geoJSON
+    static convertPolygonToGeoJSON(polygon) {
+        return {
+            type: "Feature",
+            ...polygon,
+            geometry: {
+                type: polygon.geometry.type,
+                coordinates: polygon.geometry.coordinates.map((item) => {
+                    return item.map((coords) => {
+                        return this.convertCoordsToLatlng(coords).reverse()
+                    })
+                })
+            }
+        }
+    }
+
+    // convert array of polygons to geoJson
+
+    static convertPolygonArrayToGeoJSON(array) {
+        return array.map((polygon) => {
+            polygon = {
+                ...polygon,
+                type: polygon.geometry.type,
+                coordinates: polygon.geometry.coordinates.map((item) => {
+                    return item.map((coords) => {
+                        return this.convertCoordsToLatlng(coords).reverse()
+                    })
+                })
+            }
+            delete polygon.geometry
+            return polygon
+        })
+    }
 }
