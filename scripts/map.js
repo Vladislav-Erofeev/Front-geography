@@ -15,8 +15,25 @@ var map = L.map('map').setView([44.599762035793084, 40.10297859115561], 6);
 //     pane: 'labels'
 // }).addTo(map);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-}).addTo(map);
+const osmTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+const basemapsTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png');
+
+let layer = true
+
+map.on('keyup', (e) => {
+    if (e.originalEvent.code !== 'Space')
+        return
+
+    if(layer) {
+        map.removeLayer(osmTileLayer)
+        basemapsTileLayer.addTo(map)
+        layer = false
+    } else {
+        map.removeLayer(basemapsTileLayer)
+        osmTileLayer.addTo(map)
+        layer = true
+    }
+})
 
 let pointLayer = L.layerGroup()
 
@@ -41,6 +58,3 @@ map.on('zoomend', (e) => {
         map.removeLayer(pointLayer)
     }
 })
-
-
-
