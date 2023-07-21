@@ -10,8 +10,31 @@ export function drawPolygons(map, layer) {
         return item
     })
 
+    let basicPolygonStyle = {
+        fillColor: 'blue',
+        weight: 4,
+        opacity: 0.7,
+        color: 'blue',
+        fillOpacity: 0.3
+    }
+
+    let changedPolygonStyle = {
+        fillColor: 'red',
+        color: 'black',
+    }
+
     polyArray.forEach((item) => {
         let polygon = L.polygon(item.polygon.coordinates).addTo(layer)
+
+        polygon.setStyle(basicPolygonStyle)
+
+        polygon.on('mouseover', (e) => {
+            e.target.setStyle(changedPolygonStyle)
+        })
+
+        polygon.on('mouseout', (e) => {
+            e.target.setStyle(basicPolygonStyle)
+        })
 
         polygon.addEventListener('click', (e) => {
             map.fitBounds(e.target.getBounds());
