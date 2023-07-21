@@ -11,6 +11,7 @@ export function drawFontains(map, layer) {
         let pointFromCoord = L.point(...a.geometry.coordinates)
         let latLongProj = L.CRS.EPSG3395.unproject(pointFromCoord)
         a.geometry.coordinates = [latLongProj.lat, latLongProj.lng]
+        console.log(a)
         return a
     })
 
