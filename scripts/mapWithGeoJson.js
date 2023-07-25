@@ -1,8 +1,9 @@
 // первоначальное создание карты
 import {CoordsConverter} from "./converter.js";
 import {lines, points, polygons} from "../data/data.js";
+import LineService from "./LineService.js";
 
-var map = L.map('map').setView([44.599762035793084, 40.10297859115561], 16);
+var map = L.map('map').setView([44.599762035793084, 40.10297859115561], 14);
 
 let point = CoordsConverter.convertPointToGeoJSON(points[0])
 // координаты для geoJson записывать в виде [lng, lat]
@@ -27,18 +28,37 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 var geojsonMarkerOptions = {
     radius: 10,
-    fillColor: "#ff7800",
+    fillColor: "#a9d2de",
     color: "#000",
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
 };
 
-L.geoJSON(point, {
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
+// map.on("zoomend",(e) => {
+//     console.log(e.target.getZoom())
+// })
+
+let roads = L.geoJSON()
+
+map.on('moveend', (e) => {
+    const fetch = async (xmin, ymin, xmax, ymax) => {
+        let data = await LineService.getLine(xmin, ymin, xmax, ymax)
+        map.removeLayer(roads)
+        roads = L.geoJSON(CoordsConverter.convertLineArrayToGeoJSON(data)).addTo(map)
     }
-}).bindPopup("<h1>Point</h1>").addTo(map)
+    let bounds = e.target.getBounds()
+    console.log(e.target.getZoom())
+    if (e.target.getZoom() > 14) {
+        fetch(bounds._southWest.lng, bounds._southWest.lat, bounds._northEast.lng, bounds._northEast.lat)
+    }
+})
+
+// L.geoJSON(point, {
+//     pointToLayer: function (feature, latlng) {
+//         return L.circleMarker(latlng, geojsonMarkerOptions);
+//     }
+// }).bindPopup("<h1>Point</h1>").addTo(map)
 
 L.geoJSON(pointArray, {
     pointToLayer: function (feature, latlng) {

@@ -5,7 +5,7 @@ export class CoordsConverter {
     static convertCoordsToLatlng(coords) {
         let point = L.point(coords)
         let projCoords = L.CRS.EPSG3395.unproject(point)
-        return [projCoords.lat, projCoords.lng]
+        return coords.reverse()
     }
 
     // convert point coordinates from EPSG3395 to EPSG4326
